@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-      
+      // define association here
     }
 
     static addTodo({title, dueDate}) {
@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     }
 
     static async dueToday() {
-      
+      // FILL IN HERE TO RETURN ITEMS DUE tODAY
       return await Todo.findAll({
         where: {
           dueDate: { [Op.eq]: new Date().toLocaleDateString("en-CA") },
@@ -56,9 +56,9 @@ module.exports = (sequelize, DataTypes) => {
         where: {
           id,
         }
-      }
-     )
+      })
     }
+
     static async completedItems(){
       return this.findAll({
         where: {
@@ -75,11 +75,9 @@ module.exports = (sequelize, DataTypes) => {
     title: DataTypes.STRING,
     dueDate: DataTypes.DATEONLY,
     completed: DataTypes.BOOLEAN,
-  }, 
-  {
+  }, {
     sequelize,
     modelName: 'Todo',
   });
-  
   return Todo;
 };
