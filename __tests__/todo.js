@@ -1,6 +1,5 @@
 const request = require('supertest');
 const db = require('../models/index');
-
 const app = require('../app');
 const cheerio = require('cheerio');
 
@@ -15,7 +14,6 @@ function fetchCsrfToken(res)
 describe('todo test suits', ()=>{
   beforeAll(async ()=>{
     await db.sequelize.sync({force: true});
-   
     server = app.listen(process.env.PORT || 3000, ()=>{});
     agent = request.agent(server);
   });
@@ -23,10 +21,10 @@ describe('todo test suits', ()=>{
     await db.sequelize.close();
     server.close();
   });
+  
   test('Test the functionality of create a new todo item', async () => {
     const getResponse = await agent.get('/');
     const csrfToken = fetchCsrfToken(getResponse);
-   
     const response = await agent.post('/todos').send({
       title: 'copyright year fixed',
       dueDate: new Date().toISOString(),
@@ -35,6 +33,7 @@ describe('todo test suits', ()=>{
     });
     expect(response.statusCode).toBe(302);
   });
+  
   test('Test the update functionality by updating the markAsCompleted', async () => {
     const getResponse = await agent.get('/');
     let csrfToken = fetchCsrfToken(getResponse);
@@ -44,12 +43,11 @@ describe('todo test suits', ()=>{
       completed: false,
       '_csrf': csrfToken,
     });
+    
     const TodosItems = await agent.get('/').set('Accept', 'application/json');
     const TodosItemsParse = JSON.parse(TodosItems.text);
-    
     const calculateTodosTodayITem = TodosItemsParse.dueToday.length;
     const Todo = TodosItemsParse.dueToday[calculateTodosTodayITem - 1];
-    
     const boolStatus = Todo.completed ? false : true;
     anotherRes = await agent.get('/');
     csrfToken = fetchCsrfToken(anotherRes);
@@ -60,6 +58,7 @@ describe('todo test suits', ()=>{
     const UpadteTodoItemParse = JSON.parse(changeTodo.text);
     expect(UpadteTodoItemParse.completed).toBe(true);
   });
+  
   test('Test the delete functionality', async () => {
     const getResponse = await agent.get('/');
     let csrfToken = fetchCsrfToken(getResponse);
@@ -69,10 +68,10 @@ describe('todo test suits', ()=>{
       completed: false,
       '_csrf': csrfToken,
     });
+    
     const TodosItems = await agent.get('/').set('Accept', 'application/json');
     const TodosItemsParse = JSON.parse(TodosItems.text);
     const calculateTodosTodayITem = TodosItemsParse.dueToday.length;
-   
     const Todo = TodosItemsParse.dueToday[calculateTodosTodayITem - 1];
     const boolStatus = Todo.completed ? false : true;
     anotherRes = await agent.get('/');
@@ -94,12 +93,12 @@ describe('todo test suits', ()=>{
       completed: true,
       '_csrf': csrfToken,
     });
-    
     const TodosItems = await agent.get('/').set('Accept', 'application/json');
     const TodosItemsParse = JSON.parse(TodosItems.text);
     const calculateTodosTodayITem = TodosItemsParse.dueToday.length;
     const Todo = TodosItemsParse.dueToday[calculateTodosTodayITem - 1];
     const boolStatus = !Todo.completed;
+   
     anotherRes = await agent.get('/');
     csrfToken = fetchCsrfToken(anotherRes);
 
