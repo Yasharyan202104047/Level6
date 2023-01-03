@@ -7,7 +7,7 @@
       const items = data[i];    
   %>  
       <li class="Todo-item">
-          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-green-600">
+          <div class="flex items-center w-fit my-2 px-2 py-1 rounded hover:bg-green-500">
               <input type="checkbox" id="todo-check-<%= i %>" onclick="updateTodo(<%=data[i].id%>)"
               class="w-4 h-4 text-blue-600 todo-check-<%=data[i].id%>" <% if (items.completed) { %> checked <% } %> >
               <label for="todo-check-<%= i %>" class="ml-2 text-sm text-gray-600 cursor-pointer"><%= items.title %></label>
@@ -20,6 +20,7 @@
           </div>
           
       </li>
-      <% } %>    
+      <% } %> 
+      
   </ul>
 </div>
