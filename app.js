@@ -12,10 +12,10 @@ app.use(express.urlencoded({extended: false}));
 const path = require('path');
 
 app.use(bodyParser.json());
-
 app.use(cookieParser('ssh!!!! some secret string'));
-
 app.use(csrf('this_should_be_32_character_long', ['POST', 'PUT', 'DELETE']));
+
+
 // seting the ejs is the engine
 app.set('view engine', 'ejs');
 
@@ -30,7 +30,6 @@ app.get('/', async (request, response)=>{
       allTodos, overdue, dueToday, dueLater, completedItems,
       csrfToken: request.csrfToken(),
     });
-    
   } else {
     response.json({allTodos, overdue, dueToday, dueLater});
   }
@@ -58,17 +57,17 @@ app.post('/todos', async (request, response)=>{
 app.put('/todos/:id', async (request, response) => {
   const todo = await Todo.findByPk(request.params.id);
   try {
-    
     const upTodo = await todo.setCompletionStatus(request.body.completed);
     return response.json(upTodo);
   } catch (error) {
     return response.status(422).json(error);
   }
-  
 });
+
 app.delete('/todos/:id', async function(request, response) {
   console.log('We have to delete a Todo with ID: ', request.params.id);
   // FILL IN YOUR CODE HERE
+
   // First, we have to query our database to delete a Todo by ID.
   // eslint-disable-next-line max-len
   // Then, we have to respond back with true/false based on whether the Todo was deleted or not.
