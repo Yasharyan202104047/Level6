@@ -1,5 +1,4 @@
 const app = require('./app');
-
-app.listen(process.env.PORT || 3000, ()=>{
-  console.log('started express server 3000');
+app.listen(process.env.PORT || 3003, ()=>{
+  console.log('Server has been started');
 });
